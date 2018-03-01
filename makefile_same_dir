@@ -1,0 +1,46 @@
+# universal makefile for multi file C/C++ applications
+# notes:
+# automagic header dependencies
+# automagic generation of include dir flags
+# automagic determination of source files
+
+
+CC = g++
+TARGET ?= testDriver
+
+
+BOOST_LIBS += -lboost_filesystem -lboost_system -lboost_regex
+LDFLAGS += -rdynamic -pthread
+LDLIBS += -pthread -lm $(BOOST_LIBS)
+
+# find all the C related files using the 'ls -At' command with wildcard arguments
+file_wildcards := *.c *.cpp *.cc *.c++ *.cxx *.C
+
+SRCS := $(shell ls -At $(wildcard $(file_wildcards)))
+OBJS := $(addsuffix .o,$(basename $(SRCS)))
+DEPS := $(OBJS:.o=.d)
+
+INC_DIRS := $(shell find -type d)
+INC_FLAGS := $(addprefix -I,$(INC_DIRS))
+
+CPPFLAGS ?= $(INC_FLAGS) -MMD -MP
+
+
+# if you build it, they will come.
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(LDFLAGS) $(OBJS) -o $(TARGET) $(LOADLIBES) $(LDLIBS)
+
+# some help flag
+help:
+	@echo 'make            build all sources by default'
+	@echo 'make all        build all sources'
+	@echo 'make clean      remove all binaries'
+	@echo 'make help       show this help'
+
+.PHONY: clean
+clean:
+	$(RM) $(TARGET) $(OBJS) $(DEPS)
+
+-include $(DEPS)

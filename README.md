@@ -7,3 +7,8 @@
 
 ##### Additional notes
 > I have included a sample C++ program in the `src` directory, do as you wish, delete it, publish it, burn it.
+
+
+## Same Directory Build
+> I have included a second makefile that allows for same directory source code build, just rename makefile_same_dir
+> to makefile.
