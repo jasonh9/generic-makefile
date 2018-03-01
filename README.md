@@ -4,3 +4,6 @@
 ## Usage
 > This makefile will build all sources within the `src` directory. To print out a help menu execute the command
 > `make help` it will give you useless information.
+
+##### Additional notes
+> I have included a sample C++ program in the `src` directory, do as you wish, delete it, publish it, burn it.
